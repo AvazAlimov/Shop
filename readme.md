@@ -1,8 +1,8 @@
 # **Online clothes shop**
 
-> Step 1: migrate database
+> Step 1: migrate database and seed
 ```
-php artisan migrate
+php artisan migrate --seed
 ```
 
 > Step 2: install passport

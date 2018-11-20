@@ -1,6 +1,5 @@
 <?php
 
-//use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,10 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-
 Route::post('/register', "Api\UserController@register");
 Route::post('/login', "Api\UserController@login");
 
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::post('/user', "Api\UserController@details");
+
+    Route::post('/languages', "Api\LanguageController@create");
+    Route::delete('/languages/{code}', "Api\LanguageController@delete");
+    Route::get('/languages', "Api\LanguageController@getAll");
+
+});

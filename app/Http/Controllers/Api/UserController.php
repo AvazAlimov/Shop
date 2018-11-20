@@ -35,13 +35,18 @@ class UserController extends Controller
 
     public function login()
     {
-        if(Auth::attempt(['username' => request('username'), 'password' => request('password')])){
+        if (Auth::attempt(['username' => request('username'), 'password' => request('password')])) {
             $user = Auth::user();
-            $token =  $user->createToken('Bearer')-> accessToken;
+            $token = $user->createToken('Bearer')->accessToken;
             return response()->json(['token' => $token], 200);
+        } else {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
-        else{
-            return response()->json(['error'=>'Unauthorized'], 401);
-        }
+    }
+
+    public function details()
+    {
+        $user = Auth::user();
+        return response()->json($user, 200);
     }
 }
