@@ -70,6 +70,7 @@ class BrandController extends Controller
         return response()->json([], 200);
     }
 
+    //Function to update a brand
     public function update(Request $request, $id)
     {
         //Finding a brand from database
@@ -122,6 +123,30 @@ class BrandController extends Controller
         }
 
         //Returning an updated brand
+        return response()->json($brand, 200);
+    }
+
+    //Function to get all brands
+    public function getAll()
+    {
+        $brands = Brand::all();
+        foreach ($brands as $brand) {
+            $brand->logo = $brand->logoPath();
+        }
+
+        //Returning all brands
+        return response()->json($brands, 200);
+    }
+
+    //Function to get a brand
+    public function get($id)
+    {
+        $brand = Brand::find($id);
+        if(!$brand) {
+            return response()->json([], 404);
+        }
+        $brand->logo = $brand->logoPath();
+
         return response()->json($brand, 200);
     }
 }
