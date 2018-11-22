@@ -7,6 +7,7 @@ use App\Photo;
 use App\PhotoBinding;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class BrandController extends Controller
@@ -45,5 +46,24 @@ class BrandController extends Controller
 
         //Returning created object
         return response()->json($brand, 201);
+    }
+
+    //Function to delete a brand
+    public function delete($id)
+    {
+        //Finding a brand from database
+        $brand = Brand::find($id);
+        if (!$brand) {
+            return response()->json([], 404);
+        }
+
+        //Deleting a logo from storage
+        Storage::delete("public/" . $brand->logoPath());
+
+        //Deleting a log binding and brand
+        PhotoBinding::destroy($brand->logo);
+
+        //Returning success response
+        return response()->json([], 200);
     }
 }

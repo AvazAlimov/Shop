@@ -24,5 +24,5 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/languages', "Api\LanguageController@getAll");
 
     Route::post('/brands', "Api\BrandController@create");
-
+    Route::delete('/brands/{id}', "Api\BrandController@delete");
 });
