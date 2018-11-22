@@ -12,20 +12,23 @@ use Illuminate\Support\Facades\Validator;
 
 class BrandController extends Controller
 {
+    const FILE_SIZE = "20000";
+
     //Function to create a new brand
     public function create(Request $request)
     {
         //Validating the request body
         $validation = Validator::make($request->all(), [
             "name" => "required",
-            "logo" => "mimes:jpeg,jpg,png,gif|required|max:2000"
+            "logo" => "mimes:jpeg,jpg,png,gif|required|max:" . self::FILE_SIZE
         ]);
         if ($validation->fails()) {
             return response()->json($validation->errors(), 400);
         }
 
         //Inserting an image into storage: brands and get path
-        $path = $request->file("logo")->storeAs("public/brands", $request->file("logo")->hashName());
+        $logo = $request->file("logo");
+        $path = $logo->storeAs("public/brands", $logo->hashName());
         $path = str_replace("public/", "", $path);
 
         //Creating a new photo binding
@@ -65,5 +68,60 @@ class BrandController extends Controller
 
         //Returning success response
         return response()->json([], 200);
+    }
+
+    public function update(Request $request, $id)
+    {
+        //Finding a brand from database
+        $brand = Brand::find($id);
+        if (!$brand) {
+            return response()->json([], 404);
+        }
+
+        //Validating the request body
+        $validation = Validator::make($request->all(), [
+            "logo" => "mimes:jpeg,jpg,png,gif|max:" . self::FILE_SIZE
+        ]);
+        if ($validation->fails()) {
+            return response()->json($validation->errors(), 400);
+        }
+
+        //Updating a name of a brand
+        if ($request->get("name")) {
+            $brand->name = $request->get("name");
+            $brand->save();
+        }
+
+        //Updating a logo of a brand
+        if ($request->file("logo")) {
+            $old_photo_binding = $brand->logo;
+
+            //Deleting an old logo from storage
+            Storage::delete("public/" . $brand->logoPath());
+
+            //Inserting a logo into storage: brands and get path
+            $logo = $request->file("logo");
+            $path = $logo->storeAs("public/brands", $logo->hashName());
+            $path = str_replace("public/", "", $path);
+
+            //Creating a new photo binding
+            $photo_binding = PhotoBinding::create();
+
+            //Creating a new photo
+            Photo::create([
+                "filename" => $path,
+                "binding" => $photo_binding->id
+            ]);
+
+            //Saving changes
+            $brand->logo = $photo_binding->id;
+            $brand->save();
+
+            //Deleting an old logo binding
+            PhotoBinding::destroy($old_photo_binding);
+        }
+
+        //Returning an updated brand
+        return response()->json($brand, 200);
     }
 }
