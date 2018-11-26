@@ -15,7 +15,7 @@ class CreateTranslationsTable extends Migration
     {
         Schema::create('translations', function (Blueprint $table) {
             $table->increments('id');
-            $table->char("code", 2)->unique();
+            $table->char("code", 2);
             $table->text("value");
             $table->unsignedInteger("binding");
             $table->timestamps();

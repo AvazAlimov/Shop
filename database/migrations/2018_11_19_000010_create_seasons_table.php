@@ -17,7 +17,7 @@ class CreateSeasonsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger("name");
             $table->string("default");
-            $table->unsignedInteger("photo");
+            $table->unsignedInteger("photo")->nullable();
             $table->timestamps();
 
             $table->foreign("name")->references("id")->on("translation_bindings")->onDelete("cascade");

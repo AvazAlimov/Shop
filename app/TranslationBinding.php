@@ -8,6 +8,6 @@ class TranslationBinding extends Model
 {
     public function translations()
     {
-        return $this->hasMany("App\Translation");
+        return $this->hasMany("App\Translation", "binding");
     }
 }
