@@ -30,4 +30,5 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/brands/{id}', "Api\BrandController@get");
 
     Route::post('/seasons', "Api\SeasonController@create");
+    Route::delete('/seasons/{id}', "Api\SeasonController@delete");
 });

@@ -63,7 +63,7 @@ class BrandController extends Controller
         //Deleting a logo from storage
         Storage::delete("public/" . $brand->logoPath());
 
-        //Deleting a log binding and brand
+        //Deleting a logo binding and brand
         PhotoBinding::destroy($brand->logo);
 
         //Returning success response

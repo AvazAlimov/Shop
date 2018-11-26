@@ -10,6 +10,7 @@ use App\Translation;
 use App\TranslationBinding;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class SeasonController extends Controller
@@ -70,5 +71,28 @@ class SeasonController extends Controller
 
         //Returning a new created season
         return response()->json($season, 200);
+    }
+
+    public function delete($id)
+    {
+        //Finding a brand from database
+        $season = Season::find($id);
+        if (!$season) {
+            return response()->json([], 404);
+        }
+
+        //Deleting a logo from storage
+        if ($season->photo) {
+            Storage::delete("public/" . $season->photoPath());
+
+            //Deleting a photo binding
+            PhotoBinding::destroy($season->photo);
+        }
+
+        //Deleting translations and a season
+        TranslationBinding::destroy($season->name);
+
+        //Returning success response
+        return response()->json([], 200);
     }
 }

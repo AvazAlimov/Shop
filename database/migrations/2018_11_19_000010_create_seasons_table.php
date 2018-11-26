@@ -21,7 +21,7 @@ class CreateSeasonsTable extends Migration
             $table->timestamps();
 
             $table->foreign("name")->references("id")->on("translation_bindings")->onDelete("cascade");
-            $table->foreign("photo")->references("id")->on("photo_bindings")->onDelete("cascade");
+            $table->foreign("photo")->references("id")->on("photo_bindings")->onDelete("set null");
         });
     }
 
