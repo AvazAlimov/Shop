@@ -15,13 +15,13 @@ class CreateCollectionsTable extends Migration
     {
         Schema::create('collections', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger("name");
             $table->string("default");
-            $table->unsignedInteger("photo");
+            $table->unsignedInteger("name");
+            $table->unsignedInteger("photo")->nullable();
             $table->timestamps();
 
             $table->foreign("name")->references("id")->on("translation_bindings")->onDelete("cascade");
-            $table->foreign("photo")->references("id")->on("photo_bindings")->onDelete("cascade");
+            $table->foreign("photo")->references("id")->on("photo_bindings")->onDelete("set null");
         });
     }
 
