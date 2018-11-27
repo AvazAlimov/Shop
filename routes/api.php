@@ -36,4 +36,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/seasons/{id}', "Api\SeasonController@get");
 
     Route::post('/collections', "Api\CollectionController@create");
+    Route::delete('/collections/{id}', "Api\CollectionController@delete");
+
 });

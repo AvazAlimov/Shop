@@ -10,6 +10,7 @@ use App\Translation;
 use App\TranslationBinding;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class CollectionController extends Controller
@@ -68,5 +69,29 @@ class CollectionController extends Controller
 
         //Returning a collection
         return response()->json($collection, 200);
+    }
+
+    public function delete($id)
+    {
+        //Finding a collection from a database
+        $collection = Collection::find($id);
+        if (!$collection) {
+            return response()->json([], 404);
+        }
+
+        //Deleting photos
+        if ($collection->photo) {
+            foreach ($collection->photoBindings->photos as $photo) {
+                Storage::delete("public/" . $photo->filename);
+                Photo::destroy($photo->id);
+            }
+            PhotoBinding::destroy($collection->photo);
+        }
+
+        //Deleting translations and a collection
+        TranslationBinding::destroy($collection->name);
+
+        //Returning a success response
+        return response()->json([], 200);
     }
 }

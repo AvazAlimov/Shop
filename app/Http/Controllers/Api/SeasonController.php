@@ -76,7 +76,7 @@ class SeasonController extends Controller
     //Function to delete a season
     public function delete($id)
     {
-        //Finding a brand from database
+        //Finding a brand from a database
         $season = Season::find($id);
         if (!$season) {
             return response()->json([], 404);
