@@ -37,5 +37,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::post('/collections', "Api\CollectionController@create");
     Route::delete('/collections/{id}', "Api\CollectionController@delete");
-
+    Route::post('/collections/{id}', "Api\CollectionController@update");
+    Route::get('/collections', "Api\CollectionController@getAll");
+    Route::get('/collections/{id}', "Api\CollectionController@get");
 });
