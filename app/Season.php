@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property mixed photoBindings
  * @property mixed translationBindings
+ * @property mixed photo
  */
 class Season extends Model
 {
@@ -30,6 +31,9 @@ class Season extends Model
 
     public function photoPath()
     {
+        if (!$this->photo) {
+            return null;
+        }
         $path = $this->photoBindings->photos->pluck("filename")->first();
         unset($this->photoBindings);
         return $path;

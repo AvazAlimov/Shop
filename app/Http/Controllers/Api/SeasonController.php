@@ -118,6 +118,9 @@ class SeasonController extends Controller
         //Updating a default name of a season
         if ($request->get("default")) {
             $season->default = $request->get("default");
+
+            //Saving changes
+            $season->save();
         }
 
         //Updating name translations of a season
@@ -134,13 +137,21 @@ class SeasonController extends Controller
                     "binding" => $season->name
                 ]);
             }
+
+            //Saving changes
+            $season->save();
         }
 
         //Updating a photo of a season
-        if ($request->file("photo") && $season->photo) {
-            //Deleting old photo
-            Storage::delete("public/" . $season->photoPath());
-            Photo::destroy($season->photoBindings->photos->pluck("id"));
+        if ($request->file("photo")) {
+
+            //Deleting an old photo
+            if ($season->photo) {
+                Storage::delete("public/" . $season->photoPath());
+                Photo::destroy($season->photoBindings->photos->pluck("id"));
+            } else {
+                $season->photo = PhotoBinding::create()->id;
+            }
 
             //Inserting an image into storage: brands and get path
             $logo = $request->file("photo");
@@ -152,16 +163,43 @@ class SeasonController extends Controller
                 "filename" => $path,
                 "binding" => $season->photo
             ]);
-        }
 
-        //Saving changes
-        $season->save();
+            //Saving changes
+            $season->save();
+        }
 
         //Normalizing the response
         $season->photo = $season->photoPath();
         $season->name = $season->nameTranslations();
 
         //Returning an updated season
+        return response()->json($season, 200);
+    }
+
+    //Function to get all seasons
+    public function getAll()
+    {
+        $seasons = Season::all();
+        foreach ($seasons as $season) {
+            $season->photo = $season->photoPath();
+            $season->name = $season->nameTranslations();
+        }
+
+        //Returning all seasons
+        return response()->json($seasons, 200);
+    }
+
+    //Function to get a season
+    public function get($id)
+    {
+        $season = Season::find($id);
+        if (!$season) {
+            return response()->json([], 404);
+        }
+        $season->photo = $season->photoPath();
+        $season->name = $season->nameTranslations();
+
+        //Returning a season
         return response()->json($season, 200);
     }
 }
