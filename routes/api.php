@@ -40,4 +40,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/collections/{id}', "Api\CollectionController@update");
     Route::get('/collections', "Api\CollectionController@getAll");
     Route::get('/collections/{id}', "Api\CollectionController@get");
+
+    Route::post('/categories', "Api\CategoryController@create");
 });
