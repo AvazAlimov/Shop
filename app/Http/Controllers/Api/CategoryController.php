@@ -95,4 +95,90 @@ class CategoryController extends Controller
         //Returning a success response
         return response()->json([], 200);
     }
+
+    //Function to updated a category
+    public function update(Request $request, $id)
+    {
+        //Finding a category from a database
+        $category = Category::find($id);
+        if (!$category) {
+            return response()->json([], 404);
+        }
+
+        //Validating a request body
+        $validation = Validator::make($request->all(), [
+            "photo" => "mimes:jpeg,jpg,png,gif|max:" . self::FILE_SIZE,
+            "translations" => [new TranslationsRule],
+            "parent" => [new CategoryRule]
+        ]);
+        if ($validation->fails()) {
+            return response()->json($validation->errors(), 400);
+        }
+
+        //Updated a default property
+        if ($request->get("default")) {
+            $category->default = $request->get("default");
+
+            //Saving changes
+            $category->save();
+        }
+
+        //Update a photo
+        if ($request->file("photo")) {
+            //Deleting old photo
+            if ($category->photo) {
+                Storage::delete("public/" . $category->photoPath());
+                Photo::destroy($category->photoBindings->photos->pluck("id"));
+            } else {
+                $category = PhotoBinding::create()->id;
+            }
+
+            //Inserting a new photo
+            $photo = $request->file("photo");
+            $path = $photo->storeAs("public/categories", $photo->hashName());
+            $path = str_replace("public/", "", $path);
+
+            //Creating a new photo
+            Photo::create([
+                "filename" => $path,
+                "binding" => $category->photo
+            ]);
+
+            //Saving changes
+            $category->save();
+        }
+
+        //Updating translations
+        if ($request->get("translations")) {
+            //Deleting old translations
+            Translation::destroy($category->translationBindings->translations->pluck("id"));
+
+            //Inserting new translations
+            foreach ($request->get("translations") as $code => $value) {
+                Translation::create([
+                    "code" => $code,
+                    "value" => $value,
+                    "binding" => $category->name
+                ]);
+            }
+
+            //Saving changes
+            $category->save();
+        }
+
+        //Updating a parent property
+        if ($request->get("parent") && $request->get("parent") != $category->id) {
+            $category->parent = $request->get("parent");
+
+            //Saving changes
+            $category->save();
+        }
+
+        $category = Category::find($category->id);
+        $category->name = $category->nameTranslations();
+        $category->photo = $category->photoPath();
+
+        //Returning an updated category
+        return response()->json($category, 200);
+    }
 }
