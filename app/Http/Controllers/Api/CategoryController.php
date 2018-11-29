@@ -194,4 +194,18 @@ class CategoryController extends Controller
         //Returning all categories
         return response()->json($categories, 200);
     }
+
+    //Function to get a category
+    public function get($id)
+    {
+        $category = Category::find($id);
+        if (!$category) {
+            return response()->json([], 404);
+        }
+        $category->name = $category->nameTranslations();
+        $category->photo = $category->photoPath();
+
+        //Returning a category
+        return response()->json($category, 200);
+    }
 }

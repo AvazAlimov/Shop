@@ -45,4 +45,5 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::delete('/categories/{id}', "Api\CategoryController@delete");
     Route::post('/categories/{id}', "Api\CategoryController@update");
     Route::get('/categories', "Api\CategoryController@getAll");
+    Route::get('/categories/{id}', "Api\CategoryController@get");
 });
