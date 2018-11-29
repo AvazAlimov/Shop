@@ -181,4 +181,17 @@ class CategoryController extends Controller
         //Returning an updated category
         return response()->json($category, 200);
     }
+
+    //Function to get all categories
+    public function getAll()
+    {
+        $categories = Category::all();
+        foreach ($categories as $category) {
+            $category->name = $category->nameTranslations();
+            $category->photo = $category->photoPath();
+        }
+
+        //Returning all categories
+        return response()->json($categories, 200);
+    }
 }
