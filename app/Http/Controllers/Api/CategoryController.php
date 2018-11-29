@@ -11,6 +11,7 @@ use App\Translation;
 use App\TranslationBinding;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
@@ -71,5 +72,27 @@ class CategoryController extends Controller
 
         //Returning a new created category
         return response()->json($category, 200);
+    }
+
+    //Function to delete a category
+    public function delete($id)
+    {
+        //Finding a category
+        $category = Category::find($id);
+        if (!$category) {
+            return response()->json([], 404);
+        }
+
+        //Deleting a photo
+        if ($category->photo) {
+            Storage::delete("public/" . $category->photoPath());
+            PhotoBinding::destroy($category->photo);
+        }
+
+        //Deleting translations and a category
+        TranslationBinding::destroy($category->name);
+
+        //Returning a success response
+        return response()->json([], 200);
     }
 }
