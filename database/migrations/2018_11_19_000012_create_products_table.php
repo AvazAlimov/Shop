@@ -15,14 +15,14 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger("name")->nullable();
             $table->string("default");
+            $table->unsignedInteger("name")->nullable();
+            $table->unsignedInteger("photo")->nullable();
             $table->unsignedInteger("brand")->nullable();
-            $table->unsignedInteger("collection")->nullable();
             $table->unsignedInteger("season")->nullable();
             $table->unsignedInteger("category")->nullable();
+            $table->unsignedInteger("collection")->nullable();
             $table->unsignedInteger("description")->nullable();
-            $table->unsignedInteger("photo")->nullable();
             $table->timestamps();
 
             $table->foreign("name")->references("id")->on("translation_bindings")->onDelete("set null");
