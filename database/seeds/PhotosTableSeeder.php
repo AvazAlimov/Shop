@@ -19,6 +19,8 @@ class PhotosTableSeeder extends Seeder
         $this->insert("file_2", 2);
         $this->insertBinding(3);
         $this->insert("file_3", 3);
+        $this->insertBinding(4);
+        $this->insert("file_4", 4);
     }
 
     private function insertBinding($id)
