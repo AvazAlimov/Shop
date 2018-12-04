@@ -16,10 +16,17 @@ class TranslationsTableSeeder extends Seeder
         //Brand names
         $binding = 1;
         $this->insertBinding($binding);
-        $this->insert(1, "uz", "Brand uz", $binding);
-        $this->insert(2, "ru", "Brand ru", $binding);
-        $this->insert(3, "en", "Brand en", $binding);
-        $this->insert(4, "it", "Brand it", $binding);
+        $this->insert("uz", "Brand uz", $binding);
+        $this->insert("ru", "Brand ru", $binding);
+        $this->insert("en", "Brand en", $binding);
+        $this->insert("it", "Brand it", $binding);
+
+        $binding = 2;
+        $this->insertBinding($binding);
+        $this->insert("uz", "Season 1 uz", $binding);
+        $this->insert("ru", "Season 1 ru", $binding);
+        $this->insert("en", "Season 1 en", $binding);
+        $this->insert("it", "Season 1 it", $binding);
     }
 
     private function insertBinding($id)
@@ -31,10 +38,9 @@ class TranslationsTableSeeder extends Seeder
         ]);
     }
 
-    private function insert($id, $code, $value, $binding)
+    private function insert($code, $value, $binding)
     {
         DB::table("translations")->insert([
-            "id" => $id,
             "code" => $code,
             "value" => $value,
             "binding" => $binding,

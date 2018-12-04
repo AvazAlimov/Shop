@@ -4,7 +4,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class BrandsTableSeeder extends Seeder
+class SeasonsSeederTable extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,15 +13,16 @@ class BrandsTableSeeder extends Seeder
      */
     public function run()
     {
-        $this->insert(1, 1, 1);
+        $this->insert(1, "Season 1", 2, 2);
     }
 
-    private function insert($id, $name, $logo)
+    private function insert($id, $default, $name, $photo)
     {
-        DB::table("brands")->insert([
+        DB::table("seasons")->insert([
             "id" => $id,
+            "default" => $default,
             "name" => $name,
-            "logo" => $logo,
+            "photo" => $photo,
             "created_at" => Carbon::now()->format('Y-m-d H:i:s'),
             "updated_at" => Carbon::now()->format('Y-m-d H:i:s')
         ]);
