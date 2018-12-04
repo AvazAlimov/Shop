@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder
             TranslationsTableSeeder::class,
             PhotosTableSeeder::class,
             BrandsTableSeeder::class,
-            SeasonsSeederTable::class
+            SeasonsSeederTable::class,
+            CollectionsSeederTable::class
         ]);
     }
 }

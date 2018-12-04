@@ -27,6 +27,13 @@ class TranslationsTableSeeder extends Seeder
         $this->insert("ru", "Season 1 ru", $binding);
         $this->insert("en", "Season 1 en", $binding);
         $this->insert("it", "Season 1 it", $binding);
+
+        $binding = 3;
+        $this->insertBinding($binding);
+        $this->insert("uz", "Collection 1 uz", $binding);
+        $this->insert("ru", "Collection 1 ru", $binding);
+        $this->insert("en", "Collection 1 en", $binding);
+        $this->insert("it", "Collection 1 it", $binding);
     }
 
     private function insertBinding($id)
