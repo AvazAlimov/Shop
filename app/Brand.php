@@ -17,20 +17,17 @@ class Brand extends Model
         "created_at", "updated_at"
     ];
 
-    public function products()
-    {
-        return $this->hasMany("App\Product", "brand", "id");
-    }
-
-    protected function logoBindings()
-    {
-        return $this->hasOne("App\PhotoBinding", "id", "logo");
-    }
-
     public function logoPath()
     {
-        $path = $this->logoBindings->photos->pluck("filename")->first();
-        unset($this->logoBindings);
-        return $path;
+        return $this->hasOne("App\PhotoBinding", "id", "logo")
+            ->first()
+            ->photos
+            ->pluck("filename")
+            ->first();
+    }
+
+    public function normalize()
+    {
+        $this->logo = $this->logoPath();
     }
 }

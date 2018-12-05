@@ -30,7 +30,6 @@ class CollectionRule implements Rule
         if (!$collection) {
             return false;
         }
-
         return true;
     }
 

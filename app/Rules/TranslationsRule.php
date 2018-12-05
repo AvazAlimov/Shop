@@ -30,7 +30,6 @@ class TranslationsRule implements Rule
                 return false;
             }
         }
-
         return true;
     }
 

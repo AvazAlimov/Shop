@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property mixed photo
- * @property mixed photoBindings
- * @property mixed translationBindings
+ * @property mixed name
  */
 class Collection extends Model
 {
@@ -19,35 +18,28 @@ class Collection extends Model
         "created_at", "updated_at"
     ];
 
-    public function products()
-    {
-        return $this->hasMany("App\Product");
-    }
-
-    protected function photoBindings()
-    {
-        return $this->hasOne("App\PhotoBinding", "id", "photo");
-    }
-
     public function photosPath()
     {
         if (!$this->photo) {
             return null;
         }
-        $path = $this->photoBindings->photos->pluck("filename");
-        unset($this->photoBindings);
-        return $path;
+        return $this->hasOne("App\PhotoBinding", "id", "photo")
+            ->first()
+            ->photos
+            ->pluck("filename");
     }
 
-    public function translationBindings()
+    public function translations()
     {
-        return $this->hasOne("App\TranslationBinding", "id", "name");
+        return $this->hasOne("App\TranslationBinding", "id", "name")
+            ->first()
+            ->translations
+            ->pluck("value", "code");
     }
 
-    public function nameTranslations()
+    public function normalize()
     {
-        $name = $this->translationBindings->translations->pluck("value", "code");
-        unset($this->translationBindings);
-        return $name;
+        $this->name = $this->translations();
+        $this->photo = $this->photosPath();
     }
 }

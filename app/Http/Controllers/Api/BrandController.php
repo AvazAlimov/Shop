@@ -45,7 +45,7 @@ class BrandController extends Controller
             "name" => $request->get("name"),
             "logo" => $photo_binding->id
         ]);
-        $brand->logo = $brand->logoPath();
+        $brand->normalize();
 
         //Returning created object
         return response()->json($brand, 201);
@@ -121,6 +121,7 @@ class BrandController extends Controller
             //Deleting an old logo binding
             PhotoBinding::destroy($old_photo_binding);
         }
+        $brand->normalize();
 
         //Returning an updated brand
         return response()->json($brand, 200);
@@ -131,7 +132,7 @@ class BrandController extends Controller
     {
         $brands = Brand::all();
         foreach ($brands as $brand) {
-            $brand->logo = $brand->logoPath();
+            $brand->normalize();
         }
 
         //Returning all brands
@@ -142,10 +143,10 @@ class BrandController extends Controller
     public function get($id)
     {
         $brand = Brand::find($id);
-        if(!$brand) {
+        if (!$brand) {
             return response()->json([], 404);
         }
-        $brand->logo = $brand->logoPath();
+        $brand->normalize();
 
         return response()->json($brand, 200);
     }

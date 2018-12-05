@@ -64,10 +64,7 @@ class SeasonController extends Controller
             "name" => $translation_binding->id,
             "photo" => $photo_binding != null ? $photo_binding->id : null
         ]);
-        $season->name = $season->nameTranslations();
-        if ($photo_binding) {
-            $season->photo = $season->photoPath();
-        }
+        $season->normalize();
 
         //Returning a new created season
         return response()->json($season, 200);
@@ -169,8 +166,7 @@ class SeasonController extends Controller
         }
 
         //Normalizing the response
-        $season->photo = $season->photoPath();
-        $season->name = $season->nameTranslations();
+        $season->normalize();
 
         //Returning an updated season
         return response()->json($season, 200);
@@ -181,8 +177,7 @@ class SeasonController extends Controller
     {
         $seasons = Season::all();
         foreach ($seasons as $season) {
-            $season->photo = $season->photoPath();
-            $season->name = $season->nameTranslations();
+            $season->normalize();
         }
 
         //Returning all seasons
@@ -196,8 +191,7 @@ class SeasonController extends Controller
         if (!$season) {
             return response()->json([], 404);
         }
-        $season->photo = $season->photoPath();
-        $season->name = $season->nameTranslations();
+        $season->normalize();
 
         //Returning a season
         return response()->json($season, 200);

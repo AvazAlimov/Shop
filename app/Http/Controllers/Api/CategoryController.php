@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
-    const FILE_SIZE = "2000";
+    const FILE_SIZE = "20000";
 
     //Function to create a category
     public function create(Request $request)
@@ -67,8 +67,7 @@ class CategoryController extends Controller
             "photo" => $photo_binding == null ? null : $photo_binding->id,
             "parent" => $request->get("parent") == null ? null : $request->get("parent")
         ]);
-        $category->name = $category->nameTranslations();
-        $category->photo = $category->photoPath();
+        $category->normalize();
 
         //Returning a new created category
         return response()->json($category, 200);
@@ -175,8 +174,7 @@ class CategoryController extends Controller
         }
 
         $category = Category::find($category->id);
-        $category->name = $category->nameTranslations();
-        $category->photo = $category->photoPath();
+        $category->normalize();
 
         //Returning an updated category
         return response()->json($category, 200);
@@ -187,8 +185,7 @@ class CategoryController extends Controller
     {
         $categories = Category::all();
         foreach ($categories as $category) {
-            $category->name = $category->nameTranslations();
-            $category->photo = $category->photoPath();
+            $category->normalize();
         }
 
         //Returning all categories
@@ -202,8 +199,7 @@ class CategoryController extends Controller
         if (!$category) {
             return response()->json([], 404);
         }
-        $category->name = $category->nameTranslations();
-        $category->photo = $category->photoPath();
+        $category->normalize();
 
         //Returning a category
         return response()->json($category, 200);

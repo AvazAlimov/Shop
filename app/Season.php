@@ -5,9 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property mixed photoBindings
- * @property mixed translationBindings
  * @property mixed photo
+ * @property mixed name
  */
 class Season extends Model
 {
@@ -19,35 +18,29 @@ class Season extends Model
         "created_at", "updated_at"
     ];
 
-    public function products()
-    {
-        return $this->hasMany("App\Product");
-    }
-
-    protected function photoBindings()
-    {
-        return $this->hasOne("App\PhotoBinding", "id", "photo");
-    }
-
     public function photoPath()
     {
         if (!$this->photo) {
             return null;
         }
-        $path = $this->photoBindings->photos->pluck("filename")->first();
-        unset($this->photoBindings);
-        return $path;
+        return $this->hasOne("App\PhotoBinding", "id", "photo")
+            ->first()
+            ->photos
+            ->pluck("filename")
+            ->first();
     }
 
-    public function translationBindings()
+    public function translations()
     {
-        return $this->hasOne("App\TranslationBinding", "id", "name");
+        return $this->hasOne("App\TranslationBinding", "id", "name")
+            ->first()
+            ->translations
+            ->pluck("value", "code");
     }
 
-    public function nameTranslations()
+    public function normalize()
     {
-        $name = $this->translationBindings->translations->pluck("value", "code");
-        unset($this->translationBindings);
-        return $name;
+        $this->name = $this->translations();
+        $this->photo = $this->photoPath();
     }
 }

@@ -64,8 +64,7 @@ class CollectionController extends Controller
             "name" => $translation_binding->id,
             "photo" => $photo_binding == null ? null : $photo_binding->id
         ]);
-        $collection->photo = $collection->photosPath();
-        $collection->name = $collection->nameTranslations();
+        $collection->normalize();
 
         //Returning a collection
         return response()->json($collection, 200);
@@ -171,8 +170,7 @@ class CollectionController extends Controller
 
         //Normalizing collection for response
         $collection = Collection::find($collection->id);
-        $collection->photo = $collection->photosPath();
-        $collection->name = $collection->nameTranslations();
+        $collection->normalize();
 
         //Returning updated collection
         return response()->json($collection, 200);
@@ -184,8 +182,7 @@ class CollectionController extends Controller
         //Getting all collections
         $collections = Collection::all();
         foreach ($collections as $collection) {
-            $collection->name = $collection->nameTranslations();
-            $collection->photo = $collection->photosPath();
+            $collection->normalize();
         }
 
         //Returning a response
@@ -200,8 +197,7 @@ class CollectionController extends Controller
         if (!$collection) {
             return response()->json([], 404);
         }
-        $collection->name = $collection->nameTranslations();
-        $collection->photo = $collection->photosPath();
+        $collection->normalize();
 
         //Returning a collection
         return response()->json($collection, 200);

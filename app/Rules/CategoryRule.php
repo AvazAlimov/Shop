@@ -30,7 +30,6 @@ class CategoryRule implements Rule
         if (!$parent) {
             return false;
         }
-
         return true;
     }
 
@@ -41,6 +40,6 @@ class CategoryRule implements Rule
      */
     public function message()
     {
-        return 'Parent category not found';
+        return 'Category not found';
     }
 }
