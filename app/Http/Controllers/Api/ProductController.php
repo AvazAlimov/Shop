@@ -84,4 +84,14 @@ class ProductController extends Controller
 
         return response()->json($product, 200);
     }
+
+    public function getAll()
+    {
+        $products = Product::all();
+        foreach ($products as $product) {
+            $product->normalize();
+        }
+
+        return response()->json($products, 200);
+    }
 }

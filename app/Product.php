@@ -28,10 +28,16 @@ class Product extends Model
         if (!$this->photo) {
             return null;
         }
-        return $this->hasOne("App\PhotoBinding", "id", "photo")
+        $paths = $this->hasOne("App\PhotoBinding", "id", "photo")
             ->first()
             ->photos
             ->pluck("filename");
+
+        foreach ($paths as $index => $path) {
+            $paths[$index] = resource_path($path);
+        }
+
+        return $paths;
     }
 
     public function translations($column)
