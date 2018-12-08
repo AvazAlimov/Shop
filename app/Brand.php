@@ -19,11 +19,14 @@ class Brand extends Model
 
     public function logoPath()
     {
-        return $this->hasOne("App\PhotoBinding", "id", "logo")
+        $path = $this->hasOne("App\PhotoBinding", "id", "logo")
             ->first()
             ->photos
             ->pluck("filename")
             ->first();
+
+        $path = url('/') . "/storage/" . $path;
+        return $path;
     }
 
     public function normalize()

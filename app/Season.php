@@ -23,11 +23,15 @@ class Season extends Model
         if (!$this->photo) {
             return null;
         }
-        return $this->hasOne("App\PhotoBinding", "id", "photo")
+        $path = $this->hasOne("App\PhotoBinding", "id", "photo")
             ->first()
             ->photos
             ->pluck("filename")
             ->first();
+
+        $path = url('/') . "/storage/" . $path;
+
+        return $path;
     }
 
     public function translations()

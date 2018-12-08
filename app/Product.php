@@ -34,7 +34,7 @@ class Product extends Model
             ->pluck("filename");
 
         foreach ($paths as $index => $path) {
-            $paths[$index] = "storage/" . $path;
+            $paths[$index] = url('/') . "/storage/" . $path;
         }
 
         return $paths;
