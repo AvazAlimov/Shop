@@ -18,6 +18,16 @@ class Collection extends Model
         "created_at", "updated_at"
     ];
 
+    public function photoBindings()
+    {
+        return $this->hasOne("App\PhotoBinding", "id", "photo");
+    }
+
+    public function translationBindings()
+    {
+        return $this->hasOne("App\TranslationBinding", "id", "name");
+    }
+
     public function photosPath()
     {
         if (!$this->photo) {
