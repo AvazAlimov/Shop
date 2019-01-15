@@ -51,21 +51,27 @@ class Product extends Model
     public function brandInformation()
     {
         $brand = $this->hasOne("App\Brand", "id", "brand")->first();
-        $brand->normalize();
+        if ($brand) {
+            $brand->normalize();
+        }
         return $brand;
     }
 
     public function seasonInformation()
     {
         $season = $this->hasOne("App\Season", "id", "season")->first();
-        $season->normalize();
+        if ($season) {
+            $season->normalize();
+        }
         return $season;
     }
 
     public function categoryInformation()
     {
         $category = $this->hasOne("App\Category", "id", "category")->first();
-        $category->normalize();
+        if ($category) {
+            $category->normalize();
+        }
         return $category;
     }
 
