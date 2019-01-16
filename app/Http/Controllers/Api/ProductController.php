@@ -94,4 +94,17 @@ class ProductController extends Controller
 
         return response()->json($products, 200);
     }
+
+    //Function to get a season
+    public function get($id)
+    {
+        $product = Product::find($id);
+        if (!$product) {
+            return response()->json([], 404);
+        }
+        $product->normalize();
+
+        //Returning a season
+        return response()->json($product, 200);
+    }
 }

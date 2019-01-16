@@ -57,3 +57,4 @@ Route::get('/collections', "Api\CollectionController@getAll");
 Route::get('/collections/{id}', "Api\CollectionController@get");
 
 Route::get('/products', "Api\ProductController@getAll");
+Route::get('/products/{id}', "Api\ProductController@get");
