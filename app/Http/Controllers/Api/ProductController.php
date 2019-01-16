@@ -220,11 +220,11 @@ class ProductController extends Controller
             PhotoBinding::destroy($product->photo);
         }
 
-        $description = $product->description;
         //Deleting translations
         TranslationBinding::destroy($product->name);
         //Deleting descriptions
-        TranslationBinding::destroy($description);
+        TranslationBinding::destroy($product->description);
+        Product::destroy($product->id);
 
         //Returning a success response
         return response()->json([], 200);
