@@ -166,12 +166,9 @@ class CategoryController extends Controller
         }
 
         //Updating a parent property
-        if ($request->get("parent") && $request->get("parent") != $category->id) {
-            $category->parent = $request->get("parent");
-
-            //Saving changes
-            $category->save();
-        }
+        $category->parent = $request->get("parent");
+        //Saving changes
+        $category->save();
 
         $category = Category::find($category->id);
         $category->normalize();
