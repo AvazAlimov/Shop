@@ -185,24 +185,24 @@ class ProductController extends Controller
         }
 
         //Updating brand
-        if ($request->get("brand")) {
-            $product->brand = $request->get("brand");
-        }
+//        if ($request->get("brand")) {
+        $product->brand = $request->get("brand");
+//        }
 
         //Updating season
-        if ($request->get("season")) {
-            $product->season = $request->get("season");
-        }
+//        if ($request->get("season")) {
+        $product->season = $request->get("season");
+//        }
 
         //Updating collection
-        if ($request->get("collection")) {
-            $product->collection = $request->get("collection");
-        }
+//        if ($request->get("collection")) {
+        $product->collection = $request->get("collection");
+//        }
 
         //Updating category
-        if ($request->get("category")) {
-            $product->category = $request->get("category");
-        }
+//        if ($request->get("category")) {
+        $product->category = $request->get("category");
+//        }
         $product->save();
 
         //Normalizing product for response
