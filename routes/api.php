@@ -39,6 +39,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/categories/{id}', "Api\CategoryController@update");
 
     Route::post('/products', "Api\ProductController@create");
+    Route::delete('/products/{id}', "Api\ProductController@delete");
+    Route::post('/products/{id}', "Api\ProductController@update");
 });
 
 /** GET METHODS */
